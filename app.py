@@ -1,4 +1,5 @@
-from flask import redirect, render_template, url_for, flash
+from flask import redirect, render_template, url_for, flash, request
+from flask_login import login_url
 from __init__ import app
 
 # import route blueprints
@@ -26,7 +27,7 @@ def page_not_found(e):
 def not_authorized(e):
     """send the user to the login screen when they try to access a locked page"""
     flash("Confirm Your Identity to Proceed")
-    return redirect(url_for("auth.login"))
+    return redirect(login_url("/login", next_url=url_for(request.endpoint)))
 
 
 if __name__ == '__main__':

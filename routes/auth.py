@@ -1,4 +1,5 @@
-from flask import request, redirect, render_template, url_for, flash, Blueprint
+from flask import request, redirect, render_template, url_for, flash, Blueprint, abort
+from is_safe_url import is_safe_url
 from flask_mail import Message
 from flask_login import login_user, logout_user, login_required
 from bson.objectid import ObjectId
@@ -83,13 +84,17 @@ def login():
             flash("The email or password you entered is invalid")
             return render_template('login.html')
 
-        userObj = User(user)
+        next = request.args.get('next')
+        # This isn't working.
+        """# make sure that the url is safe for a redirect
+        if not is_safe_url(next, {"locahost"}):
+            return abort(404)"""
 
-        print(remember)
+        userObj = User(user)
 
         login_user(userObj, remember=remember)
 
-        return redirect(url_for('profile.myprofile'))
+        return redirect(next or url_for('main.home'))
 
     else:
         return render_template('login.html')

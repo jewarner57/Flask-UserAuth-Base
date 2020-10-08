@@ -1,4 +1,4 @@
-from flask import flash, render_template, url_for, redirect, Blueprint
+from flask import render_template, Blueprint
 from __init__ import mongo
 
 ############################################################
